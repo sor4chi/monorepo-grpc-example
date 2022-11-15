@@ -1,0 +1,3 @@
+# monorepo-grpc-example
+
+株式会社Wizleapで開催する社内LTで使うgRPCを使ったフルスタックmonorepoアプリケーションのサンプルです
