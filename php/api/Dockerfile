@@ -1,16 +1,19 @@
 FROM php:8.1-fpm
-COPY ./php.ini /usr/local/etc/php/
-
-RUN apt-get update \
-    && apt-get install -y zlib1g-dev libzip-dev mariadb-client libpng-dev unzip
-RUN docker-php-ext-install zip pdo_mysql gd
-
-#Composer install
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-ENV COMPOSER_ALLOW_SUPERUSER 1
-ENV COMPOSER_HOME /composer
-ENV PATH $PATH:/composer/vendor/bin
 
 WORKDIR /var/www/project
 
-RUN composer global require "laravel/installer"
+RUN apt-get update && apt-get install -y \
+    libzip-dev \
+    git \
+    make \
+    zip \
+    && docker-php-ext-install \
+    sockets \
+    zip \
+    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
+    && php composer-setup.php \
+    && php -r "unlink('composer-setup.php');" \
+    && mv composer.phar /bin/composer
+
+COPY ./ ./
+RUN composer install

@@ -6,6 +6,7 @@ services:
     build: ./php/api
     volumes:
       - ./php/api:/var/www/project
+      - vendor:/var/www/project/vendor
 
   client:
     container_name: client
@@ -38,3 +39,4 @@ services:
 
 volumes:
   node_modules:
+  vendor:
